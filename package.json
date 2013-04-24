@@ -1,0 +1,23 @@
+{
+  "name": "massroute-pi",
+  "version": "0.1.0",
+  "author": {
+    "name": "Todd Anderson",
+    "email": "bustardcelly@gmail.com",
+    "url": "http://custardbelly.com/blog"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": [
+    "node >=0.8.6"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "optimist": "~0.3.5",
+    "request": "~2.16.2",
+    "connect": "~2.7.6"
+  },
+  "private": "true"
+}
