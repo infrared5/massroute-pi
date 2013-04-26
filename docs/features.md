@@ -2,11 +2,22 @@ Features / User Stories
 ===
 > The following stories describe the expected features/business rules of the massroute display to be installed in City Feed.
 
-Bus visinity notification
+Service availability
+---
+<pre>
+<b>As a</b> patron of City Fee
+<b>I want to</b> be notified if the prediction service is unavailable
+<b>So that I can</b> look out the window to see bus arrivals.
+</pre>
+
+###Criteria
+* Is notified that service is unavailable.
+
+Bus vicinity notification
 ---
 <pre>
 <b>As a</b> patron of City Feed
-<b>I want to</b> be notified when the next bus is within a distant visinity
+<b>I want to</b> be notified when the next bus is within a distant vicinity
 <b>So that I can</b> plan accordingly to shop, pack up, finish eating.
 </pre>
 
@@ -40,6 +51,7 @@ Arrival times
 
 Take-aways
 ---
+* Display should notify of service unavailable for predictions.
 * Display should calmly notify user of stops within vicinity based on time proximity.
 * Display should urgently notify user of stops within vicinity based on time proximity.
 * Display should notify user of next arrival time of outgoing bus.
