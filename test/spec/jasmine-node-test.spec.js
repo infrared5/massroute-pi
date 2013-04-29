@@ -1,11 +1,13 @@
-/*global describe:false expect:false*/
+/*global describe:false expect:false process:false*/
 var nock = require('nock'),
     request = require('request'),
-    massroute;
+    driver = require(process.cwd() + '/script/massroute-driver'),
+    proxy = require(process.cwd() + '/script/massroute-proxy'),
+    mockProxy;
 
 describe('testing grunt-jasmine-node', function() {
   beforeEach(function() {
-    massroute = nock('http://68.169.43.76:3001')
+    mockProxy = nock('http://68.169.43.76:3001')
                   .get('/routes/39/destinations/39_1_var1/stops/1129')
                   .reply(200, {predictions:[ {
                       prediction: {

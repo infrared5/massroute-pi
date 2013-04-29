@@ -29,21 +29,17 @@ module.exports = function(grunt) {
         node: false,
         globals: {
           console: true,
-          jQuery: true,
           require: true,
           requirejs: true,
           define: true,
-          Handlebars: true,
-          Sammy: true,
           jasmine: true,
           describe: true,
           it: true,
           beforeEach: true,
           afterEach: true,
           expect: true,
-          AsyncSpec: true,
           spyOn: true,
-          sinon: true
+          process: true
         }
       }
     },
