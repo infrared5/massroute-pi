@@ -2,6 +2,19 @@ Features / User Stories
 ===
 > The following stories describe the expected features/business rules of the massroute display to be installed in City Feed.
 
+Device State
+---
+<pre>
+<b>As a(n)</b> owner of the MassRoute device
+<b>I want to</b> be able to turn it off
+<b>So that I can</b> not waste power when closed.
+</pre>
+
+###Criteria
+* Is able to turn the device on from an off state.
+* Is able to turn the device off from an on state.
+
+
 Service availability
 ---
 <pre>
@@ -17,7 +30,13 @@ Bus vicinity notification
 ---
 <pre>
 <b>As a</b> patron of City Feed
-<b>I want to</b> be notified when the next bus is within a distant vicinity
+<b>I want to</b> be notified when the next bus is not within proximity
+<b>So that I can</b> go about my business without worry of bus approaching.
+</pre>
+
+<pre>
+<b>As a</b> patron of City Feed
+<b>I want to</b> be notified when the next bus is within a close vicinity
 <b>So that I can</b> plan accordingly to shop, pack up, finish eating.
 </pre>
 
@@ -28,6 +47,7 @@ Bus vicinity notification
 </pre>
 
 ###Criteria
+* Is notified in a manner that represents a bus being out of proximity.
 * Is notified in a calm manner when bus is within 5 minutes of target stop.
 * Is notified in an urgent manner when bus is within 2 minutes of target stop.
 
@@ -51,6 +71,7 @@ Arrival times
 
 Take-aways
 ---
+* Device should be powered by a switch to change on/off state.
 * Display should notify of service unavailable for predictions.
 * Display should calmly notify user of stops within vicinity based on time proximity.
 * Display should urgently notify user of stops within vicinity based on time proximity.
