@@ -1,6 +1,6 @@
-/*global module:false*/
+/*global module:false require:false process:false*/
 var events = require('events'),
-    switchModule = new events.EventEmitter(),
+    switchModule = require(process.cwd() + '/script/switch-module'),
     inboundModule = {
       stops: ['1128', '1129', '1938']
     },
@@ -34,15 +34,20 @@ driver.stop = function() {
   proxy.stop();
 };
 
+driver.shutdown = function() {
+  this.stop();
+  this.switch.removeListener('on', this.start);
+  this.switch.removeListener('off', this.stop);
+  this.switch.dispose();
+};
+
 module.exports = {
   getDriver: function(service) {
     proxy = service;
-    driver.switch.on('on', function() {
-      driver.start();
-    });
-    driver.switch.on('off', function() {
-      driver.stop();
-    });
+
+    driver.switch.configure(4);
+    driver.switch.on('on', driver.start);
+    driver.switch.on('off', driver.stop);
     return driver;
   }
 };
