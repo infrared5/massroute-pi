@@ -75,7 +75,7 @@ __defined time = 10 seconds__
 
 ###Scenario: System reports Out of Proximity
 <pre>
-<b>Given</b> predictions are accessed on the service for a single stop
+<b>Given</b> predictions are accessed on the MassRoute-Proxy for a single stop
 <b>When</b> the list predictions equal or exceed 1 item
 <b>And</b> the first prediction in seconds is over 5 minutes
 <b>Then</b> the MassRoute-Driver notifies of approaching bus out of proximity.
@@ -83,7 +83,7 @@ __defined time = 10 seconds__
 
 ###Scenario: System reports Safe Proximity
 <pre>
-<b>Given</b> predictions are accessed on the service for a single stop
+<b>Given</b> predictions are accessed on the MassRoute-Proxy for a single stop
 <b>When</b> the list predictions equal or exceed 1 item
 <b>And</b> the first prediction in seconds is under 5 minutes
 <b>And</b> the first prediction in seconds is over 2 minutes
@@ -92,8 +92,24 @@ __defined time = 10 seconds__
 
 ###Scenario: System reports Immediate Proximity
 <pre>
-<b>Given</b> predictions are accessed on the service for a single stop
+<b>Given</b> predictions are accessed on the MassRoute-Proxy for a single stop
 <b>When</b> the list predictions equal or exceed 1 item
 <b>And</b> the first prediction in seconds is under 2 minutes
 <b>Then</b> the MassRoute-Driver notifies of appraching bus within close distance.
+</pre>
+
+Feature: Arrival Times
+---
+###Scenario: Inbound Prediction
+<pre>
+<b>Given</b> MassRoute-Proxy service is enabled 
+<b>When</b> arrival time prediction for nearest inbound stop to City Feed received
+<b>Then</b> the MassRoute-Driver notifies of arrival time regardless of proximity.
+</pre>
+
+###Scenario: Outbound Prediction
+<pre>
+<b>Given</b> MassRoute-Proxy service is enabled
+<b>When</b> arrival time prediction for nearest outbound stop to City Feed received
+<b>Then</b> the MassRoute-Driver notifies of arrival time regardless of proximity.
 </pre>
