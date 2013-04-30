@@ -1,12 +1,37 @@
 /*global describe:false it:false expect:false process:false*/
 var driverFactory = require(process.cwd() + '/script/massroute-driver'),
-    proxyFactory = require(process.cwd() + '/script/massroute-proxy');
+    proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
+    gpio = require('gpio'),
+    events = require('events');
 
 describe('Device State', function() {
   
   var endpoint = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
       proxy = proxyFactory.getProxy(endpoint),
-      driver = driverFactory.getDriver(proxy);
+      driver;
+
+   beforeEach(function(done) {
+    // TODO: Move this to a helper of beforeAll()?
+    var gpioMock = Object.create(events.EventEmitter.prototype);
+    gpioMock.unexport = function() {
+      // swallow.
+    };
+    spyOn(gpio, 'export')
+      .andCallFake(function(pin, config) {
+        var readyTimeout;
+        readyTimeout = setTimeout(function() {
+          clearTimeout(readyTimeout);
+          config.ready.call(null);
+          done();
+        }, 500);
+        return gpioMock;
+      });
+    driver = driverFactory.getDriver(proxy);
+  });
+
+  afterEach(function() {
+    driver = undefined;
+  });
 
   describe('On', function() {
 

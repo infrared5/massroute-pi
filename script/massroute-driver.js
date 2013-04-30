@@ -34,13 +34,6 @@ driver.stop = function() {
   proxy.stop();
 };
 
-driver.shutdown = function() {
-  this.stop();
-  this.switch.removeListener('on', this.start);
-  this.switch.removeListener('off', this.stop);
-  this.switch.dispose();
-};
-
 module.exports = {
   getDriver: function(service) {
     proxy = service;

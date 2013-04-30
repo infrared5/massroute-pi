@@ -15,10 +15,10 @@ switchModule.configure = function(pin) {
   }
   this.module = gpio.export(pin, {
     direction: 'in',
-    ready: (function(switchModule) {
+    ready: (function(sm) {
       return function() {
-        switchModule.module.on('change', function(value) {
-          switchModule.emit((value) ? 'on' : 'off');
+        sm.module.on('change', function(value) {
+          sm.emit((value) ? 'on' : 'off');
         });
       };
     }(this))
