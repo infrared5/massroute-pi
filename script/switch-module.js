@@ -18,6 +18,7 @@ switchModule.configure = function(pin) {
     ready: (function(sm) {
       return function() {
         sm.module.on('change', function(value) {
+          cosnole.log('switch-module: change ' + value);
           sm.emit((value) ? 'on' : 'off');
         });
       };
