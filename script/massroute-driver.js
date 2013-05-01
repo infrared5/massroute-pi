@@ -27,10 +27,12 @@ var events = require('events'),
     proxy;
 
 driver.start = function() {
+  console.log('starting driver...');
   proxy.start(inboundModule.stops.concat(outboundModule.stops));
 };
 
 driver.stop = function() {
+  console.log('stopping driver...');
   proxy.stop();
 };
 

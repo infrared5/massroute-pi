@@ -62,9 +62,10 @@ app
 // // every 10-seconds per MassDOT restirctions.
 // setInterval(getPredictions, 10000);
 
-var proxyFactory = require('proxy'),
-    driver = require('driver');
-
-driver.getProxy('http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}');
+var proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
+    driver = require(process.cwd() + '/script/massroute-driver'),
+    proxy;
+proxy = proxyFactory.getProxy('http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}');
+driver.getDriver(proxy);
 
 console.log('massroute-pi server started on port ' + port + '.');
