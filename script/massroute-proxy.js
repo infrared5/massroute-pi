@@ -51,11 +51,12 @@ proxy.requestNext = function() {
             .end(function(err, res) {
               var i, length = responseDelegates.length,
                   responseDelegate;
+                  
+              proxy.stops.push(stopId);
               for(i = 0; i < length; i++) {
                 responseDelegate = responseDelegates[i];
                 responseDelegate.call(proxy, err || res.error, res);
               }
-              proxy.stops.push(stopId);
             });
     }(this));
   }

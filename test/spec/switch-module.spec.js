@@ -3,13 +3,10 @@ var gpio = require('gpio'),
 
 describe('switch-module', function() {
   
-  var switchModule = require(process.cwd() + '/script/switch-module');
+  var pin = 5,
+      switchModule = require(process.cwd() + '/script/switch-module');
 
-  describe('configure()', function() {
-
-    var pin = 5;
-
-    beforeEach(function(done) {
+  beforeEach(function(done) {
       // TODO: Move this to a helper of beforeAll()?
       var gpioMock = Object.create(events.EventEmitter.prototype);
       gpioMock.unexport = function() {
@@ -32,6 +29,8 @@ describe('switch-module', function() {
       switchModule.dispose();
     });
 
+  describe('configure()', function() {
+
     it('should define gpio module implementation', function() {
       expect(switchModule.module).not.toBeUndefined();
       expect(switchModule.module).not.toBeNull();
@@ -53,6 +52,17 @@ describe('switch-module', function() {
         done();
       });
       switchModule.module.emit('change', 0);
+    });
+
+  });
+
+  describe('dispose()', function() {
+
+    it('should unexport existant module', function() {
+      var establishedModule = switchModule.module;
+      spyOn(establishedModule, 'unexport');
+      switchModule.dispose();
+      expect(establishedModule.unexport).toHaveBeenCalled();
     });
 
   });
