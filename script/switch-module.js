@@ -21,6 +21,10 @@ switchModule.configure = function(pin) {
           console.log('switch-module: change ' + value);
           sm.emit((value) ? 'on' : 'off');
         });
+        console.log('value: ' + sm.module.value);
+        sm.module._get(function(value) {
+          console.log('value _get(): ' + value);
+        });
       };
     }(this))
   });
