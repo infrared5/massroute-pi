@@ -56,12 +56,12 @@ describe('Bus Stop Prediction Request', function() {
         time = 0;
     proxy.use(function(err, res) {
       callCount += 1;
-      console.log('callCount: ' + callCount);
       if(callCount === 1) {
         time = new Date().getTime();
       }
       else if(callCount === 2) {
-        expect((new Date().getTime()) - time).toBeGreaterThan(proxy.delay);  
+        // minus 1 incase of === which is in perfect conditions.
+        expect((new Date().getTime()) - time).toBeGreaterThan(proxy.requestDelay-1);  
         done();
       }
     });
