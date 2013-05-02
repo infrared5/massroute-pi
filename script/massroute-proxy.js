@@ -1,9 +1,20 @@
 /*global module:false require:false*/
 var request = require('superagent'),
     responseDelegates = [],
+    throttle = function(delay, method, scope) {
+      var timeout = setTimeout(function() {
+        clearTimeout(timeout);
+        method.call(scope);
+      }, delay);
+    },
     proxy = Object.create(Object.prototype, {
               'endpoint': {
                 value: undefined,
+                writable: true,
+                enumerable: true
+              },
+              'requestDelay': {
+                value: 10000,
                 writable: true,
                 enumerable: true
               },
@@ -18,6 +29,7 @@ var request = require('superagent'),
                 enumerable: true
               }
             });
+
 
 proxy.start = function(stops) {
   if(!this.enabled) {
@@ -57,14 +69,16 @@ proxy.requestNext = function() {
                 responseDelegate = responseDelegates[i];
                 responseDelegate.call(proxy, err || res.error, res);
               }
+              throttle(proxy.delay, proxy.requestNext, proxy);
             });
     }(this));
   }
 };
 
 module.exports = {
-  getProxy: function(endpoint) {
+  getProxy: function(endpoint, requestDelay) {
     proxy.endpoint = endpoint;
+    proxy.delay = requestDelay || proxy.delay;
     return proxy;
   }
 };
