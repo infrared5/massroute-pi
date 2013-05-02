@@ -28,6 +28,13 @@ Feature: Device State
 <b>Then</b> the MassRoute-Proxy service suspends requests.
 </pre>
 
+###Scenario: Driver started with on state
+<pre>
+<b>Given</b> the device has power
+<b>And</b> the peripheral switch is in 'on' state
+<b>When</b> the MassRoute-Driver service is started
+<b>Then</b> the MassRoute-Driver is notified of change to 'on' state.
+</pre>
 
 Feature: Service availability
 ---

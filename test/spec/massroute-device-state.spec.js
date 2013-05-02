@@ -2,7 +2,7 @@
 var driverFactory = require(process.cwd() + '/script/massroute-driver'),
     proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
     gpio = require('gpio'),
-    events = require('events');
+    gpioHelper = require(process.cwd() + '/test/spec/helpers/gpio.helper');
 
 describe('Device State', function() {
   
@@ -11,21 +11,7 @@ describe('Device State', function() {
       driver;
 
    beforeEach(function(done) {
-    // TODO: Move this to a helper of beforeAll()?
-    var gpioMock = Object.create(events.EventEmitter.prototype);
-    gpioMock.unexport = function() {
-      // swallow.
-    };
-    spyOn(gpio, 'export')
-      .andCallFake(function(pin, config) {
-        var readyTimeout;
-        readyTimeout = setTimeout(function() {
-          clearTimeout(readyTimeout);
-          config.ready.call(null);
-          done();
-        }, 500);
-        return gpioMock;
-      });
+    gpioHelper.stub(4, done);
     driver = driverFactory.getDriver(proxy);
   });
 

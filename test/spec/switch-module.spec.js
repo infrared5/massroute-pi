@@ -1,5 +1,5 @@
 var gpio = require('gpio'),
-    events = require('events');
+    gpioHelper = require(process.cwd() + '/test/spec/helpers/gpio.helper');
 
 describe('switch-module', function() {
   
@@ -7,21 +7,7 @@ describe('switch-module', function() {
       switchModule = require(process.cwd() + '/script/switch-module');
 
   beforeEach(function(done) {
-      // TODO: Move this to a helper of beforeAll()?
-      var gpioMock = Object.create(events.EventEmitter.prototype);
-      gpioMock.unexport = function() {
-        // swallow.
-      };
-      spyOn(gpio, 'export')
-        .andCallFake(function(pin, config) {
-          var readyTimeout;
-          readyTimeout = setTimeout(function() {
-            clearTimeout(readyTimeout);
-            config.ready.call(null);
-            done();
-          }, 500);
-          return gpioMock;
-        });
+      gpioHelper.stub(pin, done);
       switchModule.configure(pin);
     });
 

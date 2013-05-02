@@ -17,17 +17,21 @@ switchModule.configure = function(pin) {
     direction: 'in',
     ready: (function(sm) {
       return function() {
+        var moduleValue = sm.module.value;
+        // access current value - 0 by default.
+        sm.module._get(function(value) {
+          if(moduleValue !== value) {
+            sm.emit(value ? 'on' : 'off');
+          }
+        });
         sm.module.on('change', function(value) {
           console.log('switch-module: change ' + value);
-          sm.emit((value) ? 'on' : 'off');
-        });
-        console.log('value: ' + sm.module.value);
-        sm.module._get(function(value) {
-          console.log('value _get(): ' + value);
+          sm.emit(value ? 'on' : 'off');
         });
       };
     }(this))
   });
+  return this.module;
 };
 
 switchModule.dispose = function() {
