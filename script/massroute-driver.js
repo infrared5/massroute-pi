@@ -1,5 +1,15 @@
 /*global module:false require:false process:false*/
 var events = require('events'),
+    winston = require('winston'),
+    logger = new (winston.Logger)({
+      transports: [
+        new (winston.transports.Console)({
+          prettyPrint: true,
+          colorize: true,
+          timestamp: true
+        })
+      ]
+    }),
     switchModule = require(process.cwd() + '/script/switch-module'),
     inboundModule = {
       stops: ['1128', '1129', '1938']
@@ -26,13 +36,20 @@ var events = require('events'),
     }),
     proxy;
 
+function handleStopPrediction(err, response) {
+  if(err) {
+    logger.error('Error in stop prediction: ' + err);
+  }
+}
+
 driver.start = function() {
-  console.log('starting driver...');
+  logger.info('starting driver...');
+  proxy.use(handleStopPrediction);
   proxy.start(inboundModule.stops.concat(outboundModule.stops));
 };
 
 driver.stop = function() {
-  console.log('stopping driver...');
+  logger.info('stopping driver...');
   proxy.stop();
 };
 

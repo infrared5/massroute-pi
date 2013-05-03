@@ -1,5 +1,15 @@
 /*global module:false require:false setTimeout:false clearTimeout:false*/
 var request = require('superagent'),
+    winston = require('winston'),
+    logger = new (winston.Logger)({
+      transports: [
+        new (winston.transports.Console)({
+          prettyPrint: true,
+          colorize: true,
+          timestamp: true
+        })
+      ]
+    }),
     responseDelegates = [],
     requestTimeout = 0,
     throttle = function(delay, method, scope) {

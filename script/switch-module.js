@@ -1,6 +1,16 @@
 /*global module:false require:false*/
 var events = require('events'),
     gpio = require('gpio'),
+    winston = require('winston'),
+    logger = new (winston.Logger)({
+      transports: [
+        new (winston.transports.Console)({
+          prettyPrint: true,
+          colorize: true,
+          timestamp: true
+        })
+      ]
+    }),
     switchModule = Object.create(events.EventEmitter.prototype, {
       'module': {
         value: undefined,
@@ -18,14 +28,16 @@ switchModule.configure = function(pin) {
     ready: (function(sm) {
       return function() {
         var moduleValue = sm.module.value;
+        logger.info('switch-module ready(). value: ' + moduleValue);
         // access current value - 0 by default.
         sm.module._get(function(value) {
           if(moduleValue !== value) {
+            logger.info('switch-module _get() value change to: ' + value);
             sm.emit(value ? 'on' : 'off');
           }
         });
         sm.module.on('change', function(value) {
-          console.log('switch-module: change ' + value);
+          logger.info('switch-module \'change\': ' + value);
           sm.emit(value ? 'on' : 'off');
         });
       };
