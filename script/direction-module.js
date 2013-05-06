@@ -11,7 +11,7 @@ var ledFactory = require(process.cwd() + '/script/bi-color-led'),
       ]
     }),
     directionModule = {
-      respondToPrediction: function(stopId, error, predictionInSeconds) {
+      respondToPrediction: function(stopId, error, prediction) {
         
       }
     };

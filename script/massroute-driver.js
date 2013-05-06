@@ -31,7 +31,8 @@ var events = require('events'),
     }),
     proxy;
 
-function handleStopPrediction(stopId, err, response) {
+// prediction = curl http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/1128 -X GET -H "Accept: application/json"
+function handleStopPrediction(stopId, err, prediction) {
   if(err) {
     logger.error('Error in stop prediction for ' + stopId + ' : ' + err);
   }
@@ -39,7 +40,9 @@ function handleStopPrediction(stopId, err, response) {
 
 driver.start = function() {
   logger.info('starting driver...');
-  proxy.use(handleStopPrediction);
+  proxy.use(handleStopPrediction.bind(this));
+  proxy.use(this.inbound.respondToPrediction.bind(this.inbound));
+  proxy.use(this.outbound.respondToPrediction.bind(this.outbound));
   proxy.start(this.inbound.stops.concat(this.outbound.stops));
 };
 
