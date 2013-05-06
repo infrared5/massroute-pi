@@ -2,7 +2,7 @@
 var proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
     request = require('superagent');
 
-describe('Bus Stop Prediction Request', function() {
+describe('Bus Stop Prediction Request: Success', function() {
   
   var proxy,
       endpoint = 'http://68.169.43.76/bus/{0}',
@@ -44,9 +44,11 @@ describe('Bus Stop Prediction Request', function() {
 
   it('should append requested stopId to end after request response', function(done) {
     var stop = stopIds[0];
-    proxy.use(function(err, res) {
-      expect(proxy.stops[proxy.stops.length-1]).toBe(stop);
-      done();
+    proxy.use(function(stopId, err, res) {
+      if(!err) {
+        expect(proxy.stops[proxy.stops.length-1]).toBe(stop);
+        done();
+      }
     });
     proxy.start(stopIds.splice(0));
   });
@@ -54,7 +56,7 @@ describe('Bus Stop Prediction Request', function() {
   it('should not request subsequent stops until after defined request delay', function(done) {
     var callCount = 0,
         time = 0;
-    proxy.use(function(err, res) {
+    proxy.use(function(stopId, err, res) {
       callCount += 1;
       if(callCount === 1) {
         time = new Date().getTime();

@@ -7,12 +7,27 @@ var driverFactory = require(process.cwd() + '/script/massroute-driver'),
 describe('Device State', function() {
   
   var endpoint = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
+      switchConfig = {
+        pin: '4'
+      },
+      inboundConfig = {
+        '1128': {
+          redPin: '1',
+          greenPin: '2'
+        },
+      },
+      outboundConfig = {
+        '1129': {
+          redPin: '3',
+          greenPin: '4'
+        }
+      },
       proxy = proxyFactory.getProxy(endpoint),
       driver;
 
    beforeEach(function(done) {
     gpioHelper.stub(4, done);
-    driver = driverFactory.getDriver(proxy);
+    driver = driverFactory.getDriver(proxy, switchConfig, inboundConfig, outboundConfig);
   });
 
   afterEach(function() {

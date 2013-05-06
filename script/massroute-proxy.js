@@ -53,7 +53,7 @@ var request = require('superagent'),
                     proxy.stops.push(stopId);
                     for(i = 0; i < length; i++) {
                       responseDelegate = responseDelegates[i];
-                      responseDelegate.call(proxy, err || res.error, res);
+                      responseDelegate.call(stopId, proxy, err || res.error, res);
                     }
                     throttle(proxy.requestDelay, proxy.requestNext, proxy);
                   });

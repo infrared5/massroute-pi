@@ -11,12 +11,7 @@ var events = require('events'),
       ]
     }),
     switchModule = require(process.cwd() + '/script/switch-module'),
-    inboundModule = {
-      stops: ['1128', '1129', '1938']
-    },
-    outboundModule = {
-      stops: ['11164', '1164', '1162']
-    },
+    directionModule = require(process.cwd() + '/script/direction-module'),
     driver = Object.create(Object.prototype, {
       "switch": {
         value: switchModule,
@@ -24,28 +19,28 @@ var events = require('events'),
         enumerable: true
       },
       "inbound": {
-        value: inboundModule,
+        value: undefined,
         writable: true,
         enumerable: true
       },
       "outbound": {
-        value: outboundModule,
+        value: undefined,
         writable: true,
         enumerable: true
       }
     }),
     proxy;
 
-function handleStopPrediction(err, response) {
+function handleStopPrediction(stopId, err, response) {
   if(err) {
-    logger.error('Error in stop prediction: ' + err);
+    logger.error('Error in stop prediction for ' + stopId + ' : ' + err);
   }
 }
 
 driver.start = function() {
   logger.info('starting driver...');
   proxy.use(handleStopPrediction);
-  proxy.start(inboundModule.stops.concat(outboundModule.stops));
+  proxy.start(this.inbound.stops.concat(this.outbound.stops));
 };
 
 driver.stop = function() {
@@ -54,12 +49,16 @@ driver.stop = function() {
 };
 
 module.exports = {
-  getDriver: function(service) {
+  getDriver: function(service, switchConfiguration, inboundConfiguration, outboundConfiguration) {
     proxy = service;
 
-    driver.switch.configure(4);
-    driver.switch.on('on', driver.start);
-    driver.switch.on('off', driver.stop);
+    driver.inbound = directionModule.create(inboundConfiguration);
+    driver.outbound = directionModule.create(outboundConfiguration);
+
+    driver.switch.configure(switchConfiguration.pin);
+    driver.switch.on('on', driver.start.bind(driver));
+    driver.switch.on('off', driver.stop.bind(driver));
+    
     return driver;
   }
 };
