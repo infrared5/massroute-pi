@@ -19,7 +19,7 @@ var ledFactory = require(process.cwd() + '/script/bi-color-led'),
 module.exports = {
   create: function(configuration) {
     var direction = Object.create(directionModule, {
-          "maximumProxmity": {
+          "maximumProximity": {
             value: configuration.proximity.maximum,
             writable: false,
             enumerable: true
