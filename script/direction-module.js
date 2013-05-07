@@ -18,24 +18,33 @@ var ledFactory = require(process.cwd() + '/script/bi-color-led'),
 
 module.exports = {
   create: function(configuration) {
-    var _stopList = [],
-        direction = Object.create(directionModule, {
+    var direction = Object.create(directionModule, {
+          "maximumProxmity": {
+            value: configuration.proximity.maximum,
+            writable: false,
+            enumerable: true
+          },
+          "minimumProximity": {
+            value: configuration.proximity.minimum,
+            writable: false,
+            enumerable: true
+          },
           "leds": {
             value: {},
             writable: false,
             enumerable: true
           },
           "stops": {
-            value: _stopList,
-            writable: true,
+            value: [],
+            writable: false,
             enumerable: true
           }
         }),
         stopIdKey, pinMap;
 
-    for(stopIdKey in configuration) {
-      _stopList.push(stopIdKey);
-      pinMap = configuration[stopIdKey];
+    for(stopIdKey in configuration.stops) {
+      pinMap = configuration.stops[stopIdKey];
+      direction.stops.push(stopIdKey);
       direction.leds[stopIdKey] = ledFactory.create(pinMap.redPin, pinMap.greenPin);
     }
     return direction;

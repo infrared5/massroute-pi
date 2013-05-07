@@ -1,5 +1,6 @@
 /*global describe:false process:false beforeEach:false afterEach:false it:false require:false*/
 var nock = require('nock'),
+    directionHelper = require(process.cwd() + '/test/spec/helpers/direction-module.helper'),
     driverFactory = require(process.cwd() + '/script/massroute-driver'),
     proxyFactory = require(process.cwd() + '/script/massroute-proxy');
 
@@ -9,20 +10,8 @@ describe('MassRoute-Proxy service unavailable', function() {
       switchConfig = {
         pin: '4'
       },
-      inboundConfig = {
-        '1128': {
-          redPin: '1',
-          greenPin: '2'
-        },
-      },
-      outboundConfig = {
-        '1129': {
-          redPin: '3',
-          greenPin: '4'
-        }
-      },
       proxy = proxyFactory.getProxy(endpoint),
-      driver = driverFactory.getDriver(proxy, switchConfig, inboundConfig, outboundConfig),
+      driver = driverFactory.getDriver(proxy, switchConfig, directionHelper.inbound, directionHelper.outbound),
       mockProxy = nock('http://68.169.43.76:3001')
                   .get('/routes/39/destinations/39_1_var1/stops/1128')
                   .reply(404);

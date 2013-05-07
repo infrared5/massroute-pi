@@ -1,25 +1,12 @@
-var directionModule = require(process.cwd() + '/script/direction-module');
+var directionModule = require(process.cwd() + '/script/direction-module'),
+    directionHelper = require(process.cwd() + '/test/spec/helpers/direction-module.helper');
 
 describe('direction-module', function() {
   
-  var inboundConfig = {
-        '1128': {
-          redPin: '1',
-          greenPin: '2'
-        }, 
-        '1129': {
-          redPin: '3',
-          greenPin: '4'
-        },
-        '1938': {
-          redPin: '5',
-          greenPin: '6'
-        }
-      },
-      direction;
+  var direction;
 
   beforeEach(function() {
-    direction = directionModule.create(inboundConfig);
+    direction = directionModule.create(directionHelper.inbound);
   });
 
   afterEach(function() {
