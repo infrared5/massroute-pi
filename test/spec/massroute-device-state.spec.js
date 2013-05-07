@@ -8,16 +8,21 @@ var driverFactory = require(process.cwd() + '/script/massroute-driver'),
 describe('Device State', function() {
   
   var endpoint = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
+      shiftConfig = {
+        amount: 1,
+        dataPin: 17,
+        latchPin: 21,
+        clockPin: 18
+      },
       switchConfig = {
-        pin: '4'
-      } }
+        pin: 4
       },
       proxy = proxyFactory.getProxy(endpoint),
       driver;
 
    beforeEach(function(done) {
     gpioHelper.stub(4, done);
-    driver = driverFactory.getDriver(proxy, switchConfig, directionHelper.inbound, directionHelper.outbound);
+    driver = driverFactory.getDriver(proxy, shiftConfig, switchConfig, directionHelper.inbound, directionHelper.outbound);
   });
 
   afterEach(function() {

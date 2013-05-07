@@ -28,7 +28,6 @@ module.exports = function(grunt) {
         browser: true,
         node: false,
         globals: {
-          // module: true,
           console: true,
           require: true,
           requirejs: true,
@@ -40,7 +39,8 @@ module.exports = function(grunt) {
           afterEach: true,
           expect: true,
           spyOn: true,
-          process: true
+          process: true,
+          Buffer: true
         }
       }
     },

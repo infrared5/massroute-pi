@@ -19,6 +19,12 @@ var args = require('optimist').argv,
     pingCount = 0,
     // in, out final stops hit up first to get predictions.
     // stopIds = ['1129', '11164', '1938', '1128', '1162', '1164'];
+    shiftConfig = {
+      amount: 1,
+      dataPin: 17,
+      latchPin: 21,
+      clockPin: 18
+    },
     switchConfig = {
       pin: 4
     },
@@ -29,16 +35,16 @@ var args = require('optimist').argv,
       },
       stops: {
         '1128': {
-          redPin: '1',
-          greenPin: '2'
+          redPin: 1,
+          greenPin: 2
         }, 
         '1129': {
-          redPin: '3',
-          greenPin: '4'
+          redPin: 3,
+          greenPin: 4
         },
         '1938': {
-          redPin: '5',
-          greenPin: '6'
+          redPin: 5,
+          greenPin: 6
         }
       }
     },
@@ -49,16 +55,16 @@ var args = require('optimist').argv,
       },
       stops: {
         '11164': {
-          redPin: '7',
-          greenPin: '8'
+          redPin: 7,
+          greenPin: 8
         },
         '1164': {
-          redPin: '9',
-          greenPin: '10'
+          redPin: 9,
+          greenPin: 10
         },
         '1162': {
-          redPin: '11',
-          greenPin: '12'
+          redPin: 11,
+          greenPin: 12
         }
       }
     };
@@ -120,6 +126,6 @@ var proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
     proxy;
 
 proxy = proxyFactory.getProxy('http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}');
-driver.getDriver(proxy, switchConfig, inboundConfig, outboundConfig);
+driver.getDriver(proxy, shiftConfig, switchConfig, inboundConfig, outboundConfig);
 
 logger.info('massroute-pi server started on port ' + port + '.');

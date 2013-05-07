@@ -10,12 +10,18 @@ var events = require('events'),
         })
       ]
     }),
+    shifterModule = require(process.cwd() + '/script/shifter'),
     switchModule = require(process.cwd() + '/script/switch-module'),
     directionModule = require(process.cwd() + '/script/direction-module'),
     driver = Object.create(Object.prototype, {
       "switch": {
         value: switchModule,
         writable: false,
+        enumerable: true
+      },
+      "shifter": {
+        value: undefined,
+        writable: true,
         enumerable: true
       },
       "inbound": {
@@ -52,9 +58,10 @@ driver.stop = function() {
 };
 
 module.exports = {
-  getDriver: function(service, switchConfiguration, inboundConfiguration, outboundConfiguration) {
+  getDriver: function(service, shiftConfiguration, switchConfiguration, inboundConfiguration, outboundConfiguration) {
     proxy = service;
 
+    driver.shifter = shifterModule.create(shiftConfiguration);
     driver.inbound = directionModule.create(inboundConfiguration);
     driver.outbound = directionModule.create(outboundConfiguration);
 

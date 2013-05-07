@@ -4,6 +4,9 @@ var gpio = require('gpio'),
 
 var gpioStub = function(pin, done) {
   var gpioMock = Object.create(events.EventEmitter.prototype);
+  gpioMock.reset = function() {
+    // swallow.
+  }
   gpioMock.unexport = function() {
     // swallow.
   };

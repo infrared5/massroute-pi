@@ -50,6 +50,7 @@ switchModule.dispose = function() {
   if(this.module) {
     try {
       this.module.removeAllListeners('change');
+      this.module.reset();
       this.module.unexport();
       this.module = null;
     }
