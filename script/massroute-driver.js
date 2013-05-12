@@ -62,8 +62,8 @@ module.exports = {
     proxy = service;
 
     driver.shifter = shifterModule.create(shiftConfiguration);
-    driver.inbound = directionModule.create(inboundConfiguration);
-    driver.outbound = directionModule.create(outboundConfiguration);
+    driver.inbound = directionModule.create(inboundConfiguration, driver.shifter);
+    driver.outbound = directionModule.create(outboundConfiguration, driver.shifter);
 
     driver.switch.configure(switchConfiguration.pin);
     driver.switch.on('on', driver.start.bind(driver));
