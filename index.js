@@ -16,7 +16,10 @@ var args = require('optimist').argv,
     app = connect(),
     port = 3001,
     url = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
-    pingCount = 0,
+    switchModuleFactory = require(process.cwd() + '/script/switch-module'),
+    shifterModuleFactory = require(process.cwd() + '/script/shifter'),
+    directionModuleFactory = require(process.cwd() + '/script/direction-module'),
+    switchModule, shifterModule, inboundModule, outboundModule,
     // in, out final stops hit up first to get predictions.
     // stopIds = ['1129', '11164', '1938', '1128', '1162', '1164'];
     shiftConfig = {
@@ -81,51 +84,16 @@ app
   .use(connect.static(__dirname))
   .listen(port);
 
-// /**
-//  * Requests predictions from JSON service.
-//  */
-// function getPredictions() {
-//   var stopIndex = (pingCount % stopIds.length),
-//       stopId = stopIds[stopIndex];
-
-//   console.log('request: ' + url.replace('{0}', stopId));
-  
-//   request({
-//     uri: url.replace('{0}', stopId),
-//     json: true
-//   }, function(err, response, body) {  
-//     var predictions,
-//         prediction,
-//         seconds;
-
-//     if(err) {
-//       // TODO: Send error message.
-//       console.error('Error: ' + err);
-//     }
-//     else {
-//       predictions = body.predictions;
-//       if(predictions && predictions.length > 0) {
-//         prediction = predictions[0];
-//         seconds = prediction.seconds ? parseInt(prediction.seconds, 10) : -1;
-//         if(seconds > -1) {
-//           console.log('stop ' + stopId + ': ' + seconds);
-//         }
-//       }
-//     }
-//   });
-//   // reset ping so as not to get out of control.
-//   if(++pingCount == stopIds.length) {
-//     pingCount = 0;
-//   }
-// }
-// // every 10-seconds per MassDOT restirctions.
-// setInterval(getPredictions, 10000);
-
 var proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
     driver = require(process.cwd() + '/script/massroute-driver'),
     proxy;
 
+switchModule = switchModuleFactory.create(switchConfig);
+shifterModule = shifterModuleFactory.create(shiftConfig);
+inboundModule = directionModuleFactory.create(inboundConfig, shifterModule);
+outboundModule = directionModuleFactory.create(outboundConfig, shifterModule);
+
 proxy = proxyFactory.getProxy('http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}');
-driver.getDriver(proxy, shiftConfig, switchConfig, inboundConfig, outboundConfig);
+driver.getDriver(proxy, switchModule, inboundModule, outboundModule);
 
 logger.info('massroute-pi server started on port ' + port + '.');

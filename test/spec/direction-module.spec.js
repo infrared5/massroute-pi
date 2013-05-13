@@ -6,7 +6,7 @@ describe('direction-module', function() {
   var direction;
 
   beforeEach(function() {
-    direction = directionModule.create(directionHelper.inbound);
+    direction = directionModule.create(directionHelper.inboundConfiguration);
   });
 
   afterEach(function() {

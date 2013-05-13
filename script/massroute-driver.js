@@ -10,16 +10,8 @@ var events = require('events'),
         })
       ]
     }),
-    shifterModule = require(process.cwd() + '/script/shifter'),
-    switchModule = require(process.cwd() + '/script/switch-module'),
-    directionModule = require(process.cwd() + '/script/direction-module'),
     driver = Object.create(Object.prototype, {
       "switch": {
-        value: switchModule,
-        writable: false,
-        enumerable: true
-      },
-      "shifter": {
         value: undefined,
         writable: true,
         enumerable: true
@@ -46,9 +38,6 @@ function handleStopPrediction(stopId, err, prediction) {
 
 driver.start = function() {
   logger.info('starting driver...');
-  proxy.use(handleStopPrediction.bind(this));
-  proxy.use(this.inbound.respondToPrediction.bind(this.inbound));
-  proxy.use(this.outbound.respondToPrediction.bind(this.outbound));
   proxy.start(this.inbound.stops.concat(this.outbound.stops));
 };
 
@@ -58,16 +47,21 @@ driver.stop = function() {
 };
 
 module.exports = {
-  getDriver: function(service, shiftConfiguration, switchConfiguration, inboundConfiguration, outboundConfiguration) {
+  getDriver: function(service, switchModule, inboundModule, outboundModule) {
     proxy = service;
+    proxy.use(handleStopPrediction.bind(this));
+    proxy.use(inboundModule.respondToPrediction.bind(inboundModule));
+    proxy.use(outboundModule.respondToPrediction.bind(outboundModule));
 
-    driver.shifter = shifterModule.create(shiftConfiguration);
-    driver.inbound = directionModule.create(inboundConfiguration, driver.shifter);
-    driver.outbound = directionModule.create(outboundConfiguration, driver.shifter);
+    driver.switch = switchModule;
+    driver.inbound = inboundModule;
+    driver.outbound = outboundModule;
 
-    driver.switch.configure(switchConfiguration.pin);
     driver.switch.on('on', driver.start.bind(driver));
     driver.switch.on('off', driver.stop.bind(driver));
+    if(driver.switch.value === 1) {
+      driver.start.call(driver);
+    }
     
     return driver;
   }

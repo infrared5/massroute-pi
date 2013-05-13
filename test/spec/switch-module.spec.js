@@ -1,14 +1,18 @@
+/*global require:false process:false describe:false beforeEach:false afterEach:false it:false spyOn:false expect:false*/
 var gpio = require('gpio'),
+    switchModuleFactory = require(process.cwd() + '/script/switch-module'),
     gpioHelper = require(process.cwd() + '/test/spec/helpers/gpio.helper');
 
 describe('switch-module', function() {
   
-  var pin = 5,
-      switchModule = require(process.cwd() + '/script/switch-module');
+  var configuration = {
+        pin: 5
+      },
+      switchModule;
 
   beforeEach(function(done) {
-      gpioHelper.stub(pin, done);
-      switchModule.configure(pin);
+      gpioHelper.stub(configuration.pin, done);
+      switchModule = switchModuleFactory.create(configuration);
     });
 
     afterEach(function() {

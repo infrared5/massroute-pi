@@ -1,5 +1,6 @@
-/*global describe:false process:false beforeEach:false afterEach:false it:false require:false*/
+/*global describe:false process:false beforeEach:false afterEach:false it:false require:false expect:false*/
 var nock = require('nock'),
+    switchModule = require(process.cwd() + '/script/switch-module'),
     directionHelper = require(process.cwd() + '/test/spec/helpers/direction-module.helper'),
     driverFactory = require(process.cwd() + '/script/massroute-driver'),
     proxyFactory = require(process.cwd() + '/script/massroute-proxy');
@@ -7,17 +8,11 @@ var nock = require('nock'),
 describe('MassRoute-Proxy service unavailable', function() {
   
   var endpoint = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
-      shiftConfig = {
-        amount: 1,
-        dataPin: 17,
-        latchPin: 21,
-        clockPin: 18
-      },
       switchConfig = {
         pin: 4
       },
       proxy = proxyFactory.getProxy(endpoint),
-      driver = driverFactory.getDriver(proxy, shiftConfig, switchConfig, directionHelper.inbound, directionHelper.outbound),
+      driver = driverFactory.getDriver(proxy, switchModule.create(switchConfig), directionHelper.inboundModule, directionHelper.outboundModule),
       mockProxy = nock('http://68.169.43.76:3001')
                   .get('/routes/39/destinations/39_1_var1/stops/1128')
                   .reply(404);

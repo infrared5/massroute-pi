@@ -2,18 +2,13 @@
 var driverFactory = require(process.cwd() + '/script/massroute-driver'),
     proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
     gpio = require('gpio'),
+    switchModule = require(process.cwd() + '/script/switch-module'),
     gpioHelper = require(process.cwd() + '/test/spec/helpers/gpio.helper'),
     directionHelper = require(process.cwd() + '/test/spec/helpers/direction-module.helper');
 
 describe('Device State', function() {
   
   var endpoint = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
-      shiftConfig = {
-        amount: 1,
-        dataPin: 17,
-        latchPin: 21,
-        clockPin: 18
-      },
       switchConfig = {
         pin: 4
       },
@@ -21,8 +16,8 @@ describe('Device State', function() {
       driver;
 
    beforeEach(function(done) {
-    gpioHelper.stub(4, done);
-    driver = driverFactory.getDriver(proxy, shiftConfig, switchConfig, directionHelper.inbound, directionHelper.outbound);
+    gpioHelper.stub(switchConfig.pin, done);
+    driver = driverFactory.getDriver(proxy, switchModule.create(switchConfig), directionHelper.inboundModule, directionHelper.outboundModule);
   });
 
   afterEach(function() {
@@ -32,6 +27,7 @@ describe('Device State', function() {
   describe('On', function() {
 
     it('should start requests upon notification from switch module', function(done) {
+      console.log('on start()');
       spyOn(proxy, 'start').andCallFake(function() {
         // if we got here asynchronously, we are as expected.
         expect(true).toEqual(true);
@@ -40,6 +36,7 @@ describe('Device State', function() {
         expect(proxy.start).toHaveBeenCalledWith(jasmine.any(Array));
         done();
       });
+      console.log('is switch: ' + (driver.switch === switchModule) );
       driver.switch.emit('on');
     });
 
