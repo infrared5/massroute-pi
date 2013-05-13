@@ -3,19 +3,13 @@ var args = require('optimist').argv,
     path = require('path'),
     request = require('request'),
     connect = require('connect'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-      transports: [
-        new (winston.transports.Console)({
-          prettyPrint: true,
-          colorize: true,
-          timestamp: true
-        })
-      ]
-    }),
+    logger = require(process.cwd() + '/script/massroute-logger'),
     app = connect(),
     port = 3001,
     url = 'http://68.169.43.76:3001/routes/39/destinations/39_1_var1/stops/{0}',
+    driver = require(process.cwd() + '/script/massroute-driver'),
+    proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
+    proxy,
     switchModuleFactory = require(process.cwd() + '/script/switch-module'),
     shifterModuleFactory = require(process.cwd() + '/script/shifter'),
     directionModuleFactory = require(process.cwd() + '/script/direction-module'),
@@ -83,10 +77,6 @@ app
   .use(connect.logger('dev'))
   .use(connect.static(__dirname))
   .listen(port);
-
-var proxyFactory = require(process.cwd() + '/script/massroute-proxy'),
-    driver = require(process.cwd() + '/script/massroute-driver'),
-    proxy;
 
 switchModule = switchModuleFactory.create(switchConfig);
 shifterModule = shifterModuleFactory.create(shiftConfig);

@@ -1,15 +1,6 @@
 /*global module:false require:false process:false*/
 var ledFactory = require(process.cwd() + '/script/bi-color-led'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-      transports: [
-        new (winston.transports.Console)({
-          prettyPrint: true,
-          colorize: true,
-          timestamp: true
-        })
-      ]
-    }),
+    logger = require(process.cwd() + '/script/massroute-logger'),
     directionModule = {
       respondToPrediction: function(stopId, error, prediction) {
         // todo, determine stopID LED and flip based on prediction.

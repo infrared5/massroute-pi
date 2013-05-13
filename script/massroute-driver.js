@@ -1,15 +1,6 @@
 /*global module:false require:false process:false*/
 var events = require('events'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-      transports: [
-        new (winston.transports.Console)({
-          prettyPrint: true,
-          colorize: true,
-          timestamp: true
-        })
-      ]
-    }),
+    logger = require(process.cwd() + '/script/massroute-logger'),
     driver = Object.create(Object.prototype, {
       "switch": {
         value: undefined,

@@ -1,16 +1,7 @@
 /*global module:false require:false*/
 var events = require('events'),
     gpio = require('gpio'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-      transports: [
-        new (winston.transports.Console)({
-          prettyPrint: true,
-          colorize: true,
-          timestamp: true
-        })
-      ]
-    }),
+    logger = require(process.cwd() + '/script/massroute-logger'),
     switchModule = {
       configure: function(pin) {
         if(this.module) {

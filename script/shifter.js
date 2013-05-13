@@ -1,15 +1,6 @@
 /*global module:false require:false Buffer:false*/
 var gpio = require('gpio'),
-    winston = require('winston'),
-    logger = new (winston.Logger)({
-      transports: [
-        new (winston.transports.Console)({
-          prettyPrint: true,
-          colorize: true,
-          timestamp: true
-        })
-      ]
-    }),
+    logger = require(process.cwd() + '/script/massroute-logger'),
     shifter = {
       start: function() {
         this.dataOut = gpio.export(this.dataPin, {

@@ -24,7 +24,9 @@
     "nock": "~0.17.3",
     "gpio": "~0.2.4",
     "superagent": "~0.14.1",
-    "winston": "~0.7.1"
+    "caterpillar": "~2.0.2",
+    "caterpillar-filter": "~2.0.1",
+    "caterpillar-human": "~2.1.0"
   },
   "private": "true"
 }
