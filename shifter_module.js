@@ -6,6 +6,7 @@ var shifterModule = require(process.cwd() + '/script/shifter'),
       latchPin: 21,
       clockPin: 18
     },
+    logger = require(process.cwd() + '/script/massroute-logger'),
     shifter,
     flag = 0;
 
@@ -14,11 +15,13 @@ shifter.start();
 
 setInterval(function() {
   if(flag++ % 2) {
+    logger.info('set red');
     shifter.setPin(1, 1);
     shifter.setPin(2, 0);
     shifter.write();
   }
   else {
+    logger.info('set green');
     shifter.setPin(1, 0);
     shifter.setPin(2, 1);
   }
