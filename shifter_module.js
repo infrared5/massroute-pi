@@ -16,13 +16,13 @@ shifter.start();
 setInterval(function() {
   if(flag++ % 2) {
     logger.info('set red');
-    shifter.setPin(1, 1);
-    shifter.setPin(2, 0);
+    shifter.setPin(0, 1);
+    shifter.setPin(1, 0);
     shifter.write();
   }
   else {
     logger.info('set green');
-    shifter.setPin(1, 0);
-    shifter.setPin(2, 1);
+    shifter.setPin(0, 0);
+    shifter.setPin(1, 1);
   }
 }, 1000);
