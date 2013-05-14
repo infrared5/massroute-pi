@@ -78,10 +78,10 @@ var gpio = require('gpio'),
     };
 
 module.exports = {
-  create: function(dataPin, latchPin, clockPin, numRegisters) {
+  create: function(configuration) {
     var s = Object.create(shifter, {
       "dataPin": {
-        value: dataPin,
+        value: configuration.dataPin,
         writable: false,
         enumerable: true
       },
@@ -91,7 +91,7 @@ module.exports = {
         enumerable: false
       },
       "latchPin": {
-        value: latchPin,
+        value: configuration.latchPin,
         writable: false,
         enumerable: true
       },
@@ -101,7 +101,7 @@ module.exports = {
         enumerable: true
       },
       "clockPin": {
-        value: clockPin,
+        value: configuration.clockPin,
         writable: false,
         enumerable: true
       },
@@ -111,11 +111,11 @@ module.exports = {
         enumerable: true
       },
       "registerAmount": {
-        value: numRegisters,
+        value: configuration.amount,
         writable: true,
         enumerable: true
       },
-      "shifterRegisters": {
+      "shiftRegisters": {
         value: new Buffer(25),
         writable: true,
         enumerable: true

@@ -1,3 +1,4 @@
+/*global module:false require:false process:false*/
 var level = 7,
     logger = new (require('caterpillar').Logger)({level:level}),
     filter = new (require('caterpillar-filter').Filter)(),
@@ -5,7 +6,7 @@ var level = 7,
     curryLog = function(type) {
       return function(message) {
         logger.log(type, message);
-      }
+      };
     };
 
 logger.pipe(filter).pipe(human).pipe(process.stdout);
