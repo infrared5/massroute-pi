@@ -12,6 +12,7 @@ var gpio = require('gpio'),
         this.clockOut = gpio.export(this.clockPin, {
           direction: 'out'
         });
+        logger.info('start');
         this.clear();
       },
       stop: function() {
@@ -63,6 +64,7 @@ var gpio = require('gpio'),
           while(--j > -1) {
             this.clockOut.set(0);
             value = this.shiftRegisters[i] & (1 << j);
+            logger.info('write() : ' + value);
             this.dataOut.set(value);
             this.clockOut.set(1);
           }
@@ -71,6 +73,7 @@ var gpio = require('gpio'),
       },
       clear: function() {
         var i = this.registerAmount * 8;
+        logger.info('clear()');
         while(--i > -1) {
           this.setPin(i, 0);
         }

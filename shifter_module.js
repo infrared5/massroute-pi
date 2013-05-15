@@ -24,5 +24,6 @@ setInterval(function() {
     logger.info('set green');
     shifter.setPin(0, 0);
     shifter.setPin(1, 1);
+    shifter.write();
   }
 }, 1000);
