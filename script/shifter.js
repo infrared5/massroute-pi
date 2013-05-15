@@ -13,15 +13,15 @@ var gpio = require('gpio'),
             };
         this.dataOut = gpio.export(this.dataPin, {
           direction: 'out',
-          ready: passStartCriteria
+          ready: passCriteria
         });
         this.latchOut = gpio.export(this.latchPin, {
           direction: 'out',
-          ready: passStartCriteria
+          ready: passCriteria
         });
         this.clockOut = gpio.export(this.clockPin, {
           direction: 'out',
-          ready: passStartCriteria
+          ready: passCriteria
         });
         logger.info('start');
         this.clear();
