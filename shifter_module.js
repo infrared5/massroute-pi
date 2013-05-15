@@ -11,19 +11,19 @@ var shifterModule = require(process.cwd() + '/script/shifter'),
     flag = 0;
 
 shifter = shifterModule.create(shiftConfig);
-shifter.start();
-
-setInterval(function() {
-  if(flag++ % 2) {
-    logger.info('set red');
-    shifter.setPin(0, 1);
-    shifter.setPin(1, 0);
-    shifter.write();
-  }
-  else {
-    logger.info('set green');
-    shifter.setPin(0, 0);
-    shifter.setPin(1, 1);
-    shifter.write();
-  }
-}, 1000);
+shifter.start(function() {
+  setInterval(function() {
+    if(flag++ % 2) {
+      logger.info('set red');
+      shifter.setPin(0, 1);
+      shifter.setPin(1, 0);
+      shifter.write();
+    }
+    else {
+      logger.info('set green');
+      shifter.setPin(0, 0);
+      shifter.setPin(1, 1);
+      shifter.write();
+    }
+  }, 1000);
+});

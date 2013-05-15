@@ -2,15 +2,26 @@
 var gpio = require('gpio'),
     logger = require(process.cwd() + '/script/massroute-logger'),
     shifter = {
-      start: function() {
+      start: function(callback) {
+        var criteriaCount = 0,
+            criteriaLimit = 3,
+            passCriteria = function() {
+              criteriaCount = criteriaCount + 1;
+              if(criteriaCount === criteriaLimit) {
+                callback.call(null);
+              }
+            };
         this.dataOut = gpio.export(this.dataPin, {
-          direction: 'out'
+          direction: 'out',
+          ready: passStartCriteria
         });
         this.latchOut = gpio.export(this.latchPin, {
-          direction: 'out'
+          direction: 'out',
+          ready: passStartCriteria
         });
         this.clockOut = gpio.export(this.clockPin, {
-          direction: 'out'
+          direction: 'out',
+          ready: passStartCriteria
         });
         logger.info('start');
         this.clear();
