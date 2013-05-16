@@ -13,15 +13,30 @@ var gpio = require('gpio'),
             };
         this.dataOut = gpio.export(this.dataPin, {
           direction: 'out',
-          ready: passCriteria
+          ready: function() {
+            var timeout = setTimeout(function() {
+              clearTimeout(timeout);
+              passCriteria();
+            });
+          }
         });
         this.latchOut = gpio.export(this.latchPin, {
           direction: 'out',
-          ready: passCriteria
+          ready: function() {
+            var timeout = setTimeout(function() {
+              clearTimeout(timeout);
+              passCriteria();
+            });
+          }
         });
         this.clockOut = gpio.export(this.clockPin, {
           direction: 'out',
-          ready: passCriteria
+          ready: function() {
+            var timeout = setTimeout(function() {
+              clearTimeout(timeout);
+              passCriteria();
+            });
+          }
         });
         logger.info('start');
         this.clear();
