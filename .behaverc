@@ -1,0 +1,4 @@
+[behave]
+show_source=yes
+stop=yes
+strict=yes
